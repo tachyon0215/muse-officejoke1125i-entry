@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
-"""Write the entry text to entry.txt.
+"""Write the one-line office joke entry to entry.txt.
 
-Entry for make.fun's "One-Line Office Jokes": Three real office details in one line - a calendar focus block, a boss booking a meeting about protecting focus, and a Teams status stuck on 'away' - with the laugh in the last words: Teams is the only one telling the truth.
+Judging fit: a strong office joke needs details every office worker
+recognises and a punch that lands in the final words. This entry uses
+three real details - a calendar focus block, a boss who books a
+meeting about protecting that focus time, and a Teams status stuck on
+'away' all morning - then turns them with the closing verdict that
+Teams is the only one telling the truth. The contradiction between
+the meeting's stated purpose and its existence is the joke, and
+keeping everything in one line preserves its timing.
 Deterministic: a fixed text, no network, no randomness, no clock.
 """
 import os
@@ -23,6 +30,14 @@ def validate(text: str) -> None:
         raise ValueError("wrong line count")
     if "\r" in body:
         raise ValueError("no carriage returns")
+    if body != body.strip():
+        raise ValueError("no leading or trailing whitespace")
+    if not body.endswith("."):
+        raise ValueError("entry should end with a full stop")
+    if "  " in body:
+        raise ValueError("no double spaces")
+    if any(not ch.isprintable() for ch in body):
+        raise ValueError("entry must be printable text only")
 
 
 def main() -> None:
